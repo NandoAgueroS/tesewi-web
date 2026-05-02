@@ -1,0 +1,42 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.example
+
+# Configuration (sensitive)
+application*.yml
+application*.yaml
+application*.properties
+application*.json
+vite.config.ts
+
+# Build outputs
+backend/target/
+frontend/dist/
+
+# Dependencies
+frontend/node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.factorypath
+.settings/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.tmp
+*.temp
