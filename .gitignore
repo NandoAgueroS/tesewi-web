@@ -41,3 +41,12 @@ Thumbs.db
 # Temp files
 *.tmp
 *.temp
+
+# Project-specific (local notes, not tracked)
+.atl/
+LEARNING.md
+TASKS.md
+UI-INVENTORY.md
+AGENTS.md
+openspec/
+postman/
