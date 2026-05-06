@@ -13,6 +13,8 @@ public interface OrderService {
 
     OrderResponse getOrderById(String id);
 
+    OrderResponse getOrderByNumber(String orderNumber);
+
     Page<OrderResponse> getAllOrders(Pageable pageable);
 
     OrderResponse updateOrder(String id, UpdateOrderRequest request);

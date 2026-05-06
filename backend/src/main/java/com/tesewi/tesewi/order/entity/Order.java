@@ -1,5 +1,6 @@
 package com.tesewi.tesewi.order.entity;
 
+import com.tesewi.tesewi.auth.entity.User;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,6 +14,9 @@ public class Order {
     @Id
     @Column(name = "id", length = 20)
     private String id;
+
+    @Column(name = "order_number", nullable = false, unique = true, length = 20)
+    private String orderNumber;
 
     @Column(name = "client_name", nullable = false)
     private String clientName;
@@ -54,6 +58,10 @@ public class Order {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "assigned_technician_id")
+    private User assignedTechnician;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderPhoto> photos = new ArrayList<>();
 
@@ -78,6 +86,14 @@ public class Order {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     public String getClientName() {
@@ -174,6 +190,14 @@ public class Order {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public User getAssignedTechnician() {
+        return assignedTechnician;
+    }
+
+    public void setAssignedTechnician(User assignedTechnician) {
+        this.assignedTechnician = assignedTechnician;
     }
 
     public List<OrderPhoto> getPhotos() {

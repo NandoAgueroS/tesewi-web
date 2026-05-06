@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,13 +24,21 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @GetMapping("/by-number/{orderNumber}")
+    public ResponseEntity<OrderResponse> getOrderByNumber(@PathVariable String orderNumber) {
+        OrderResponse response = orderService.getOrderByNumber(orderNumber);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody CreateOrderRequest request) {
         OrderResponse response = orderService.createOrder(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
     public ResponseEntity<Page<OrderResponse>> getAllOrders(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
@@ -46,12 +55,14 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
     public ResponseEntity<OrderResponse> getOrderById(@PathVariable String id) {
         OrderResponse response = orderService.getOrderById(id);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
     public ResponseEntity<OrderResponse> updateOrder(
             @PathVariable String id,
             @Valid @RequestBody UpdateOrderRequest request) {
@@ -60,6 +71,7 @@ public class OrderController {
     }
 
     @PatchMapping("/{id}/status")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
     public ResponseEntity<OrderResponse> transitionStatus(
             @PathVariable String id,
             @Valid @RequestBody StatusTransitionRequest request) {

@@ -36,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse createOrder(CreateOrderRequest request) {
         Order order = new Order();
         order.setId(generateOrderId());
+        order.setOrderNumber(generateOrderId());
         order.setClientName(request.getClientName());
         order.setClientPhone(request.getClientPhone());
         order.setClientEmail(request.getClientEmail());
@@ -54,6 +55,16 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse getOrderById(String id) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException(id));
+        return OrderResponse.fromEntity(order);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OrderResponse getOrderByNumber(String orderNumber) {
+        Order order = orderRepository.findByOrderNumber(orderNumber);
+        if (order == null) {
+            throw new OrderNotFoundException(orderNumber);
+        }
         return OrderResponse.fromEntity(order);
     }
 
